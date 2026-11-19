@@ -1,7 +1,7 @@
 //! Claude Code: one transcript per session under `projects/<slug>/`, plus a
 //! `history.jsonl` of prompts used for titles and activity.
 //!
-//! Project folder names are encoded paths (`-home-system`), which are lossy
+//! Project folder names are encoded paths (`-home-user`), which are lossy
 //! when a directory contains a dash. The transcript itself records `cwd`, so
 //! that is preferred and the slug is only a last resort.
 //!

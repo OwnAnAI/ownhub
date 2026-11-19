@@ -22,7 +22,7 @@ fn with_env(mut server: HarnessServer, key: &str, value: &str) -> HarnessServer 
 fn json_envelopes_keep_foreign_keys_and_entries() {
     let existing = r#"{
   "numStartups": 42,
-  "projects": { "/home/system/repo": { "history": ["a"] } },
+  "projects": { "/home/user/repo": { "history": ["a"] } },
   "mcpServers": {
     "hand-added": { "command": "custom-tool" },
     "github": { "command": "stale", "args": [], "tools": ["*"] },
@@ -42,7 +42,7 @@ fn json_envelopes_keep_foreign_keys_and_entries() {
 
     // Claude's own settings are untouched.
     assert_eq!(value["numStartups"], 42);
-    assert_eq!(value["projects"]["/home/system/repo"]["history"][0], "a");
+    assert_eq!(value["projects"]["/home/user/repo"]["history"][0], "a");
 
     // A server the catalog has never owned is left alone, and the id we
     // used to own is cleaned up.
@@ -71,7 +71,7 @@ fn jsonc_targets_use_the_mcp_key_merged_command_and_environment() {
     "stale-shape": { "command": "old", "args": ["one"] },
     "gone": { "command": "old" }
   },
-  "skills": { "paths": ["/home/system/.ownhub/active/opencode"] }
+  "skills": { "paths": ["/home/user/.ownhub/active/opencode"] }
 }"#;
 
     let active = vec![with_env(
@@ -91,7 +91,7 @@ fn jsonc_targets_use_the_mcp_key_merged_command_and_environment() {
     // The bridge's own `skills.paths` entry survives.
     assert_eq!(
         value["skills"]["paths"][0],
-        "/home/system/.ownhub/active/opencode"
+        "/home/user/.ownhub/active/opencode"
     );
     assert!(value["mcp"].get("gone").is_none());
 
@@ -118,7 +118,7 @@ args = []
 startup_timeout_sec = 120
 
 [mcp_servers.headroom]
-command = "/home/system/.local/bin/headroom"
+command = "/home/user/.local/bin/headroom"
 args = ["mcp", "serve"]
 
 [mcp_servers.headroom.env]

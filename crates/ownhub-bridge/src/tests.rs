@@ -130,7 +130,7 @@ mod tests {
     #[test]
     fn merges_skills_path_into_jsonc_without_losing_keys() {
         let content = "{\n  // keep this comment\n  \"permission\": { \"bash\": \"ask\" },\n}\n";
-        let scope = "/home/system/.ownhub/active/kilo";
+        let scope = "/home/user/.ownhub/active/kilo";
 
         let updated = merge_skills_path(content, scope).unwrap().unwrap();
         assert!(updated.contains("// keep this comment"));
@@ -159,7 +159,7 @@ mod tests {
     fn merges_into_existing_skills_block() {
         let content =
             "{\n  \"skills\": { \"paths\": [\"/other\"] },\n  \"mcp\": { \"rea\": true }\n}\n";
-        let scope = "/home/system/.ownhub/active/opencode";
+        let scope = "/home/user/.ownhub/active/opencode";
 
         let updated = merge_skills_path(content, scope).unwrap().unwrap();
         let value: serde_json::Value = serde_json::from_str(&updated).unwrap();

@@ -22,7 +22,7 @@ fn deploy_writes_every_adapter_and_removes_only_what_it_owns() {
         ".claude.json",
         r#"{
   "numStartups": 7,
-  "projects": { "/home/system/repo": { "history": ["x"] } },
+  "projects": { "/home/user/repo": { "history": ["x"] } },
   "mcpServers": {}
 }
 "#,
@@ -72,7 +72,7 @@ fn deploy_writes_every_adapter_and_removes_only_what_it_owns() {
     // Non-MCP content is intact everywhere.
     let claude: JsonValue = serde_json::from_str(&test.read(".claude.json")).unwrap();
     assert_eq!(claude["numStartups"], 7);
-    assert_eq!(claude["projects"]["/home/system/repo"]["history"][0], "x");
+    assert_eq!(claude["projects"]["/home/user/repo"]["history"][0], "x");
     assert_eq!(claude["mcpServers"]["headroom"]["command"], "headroom");
 
     let antigravity: JsonValue =

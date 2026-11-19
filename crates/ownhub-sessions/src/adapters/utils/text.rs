@@ -18,7 +18,7 @@ pub fn trim_title(text: &str) -> String {
 }
 
 /// Best effort recovery of a working directory from an encoded path segment
-/// (`%2Fhome%2Fsystem`, `/home/system`) used by Grok's session folders.
+/// (`%2Fhome%2Fuser`, `/home/user`) used by Grok's session folders.
 pub fn decode_path_hint(raw: &str) -> Option<String> {
     let raw = raw.trim();
     if raw.is_empty() {

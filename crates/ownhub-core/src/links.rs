@@ -193,8 +193,8 @@ mod tests {
     #[test]
     fn verbatim_drive_prefixes_are_dropped() {
         assert_eq!(
-            strip_verbatim(Path::new(r"\\?\C:\Users\system\.ownhub\active\codex")),
-            PathBuf::from(r"C:\Users\system\.ownhub\active\codex")
+            strip_verbatim(Path::new(r"\\?\C:\Users\user\.ownhub\active\codex")),
+            PathBuf::from(r"C:\Users\user\.ownhub\active\codex")
         );
     }
 
@@ -209,12 +209,12 @@ mod tests {
     #[test]
     fn plain_paths_pass_through_unchanged() {
         assert_eq!(
-            strip_verbatim(Path::new("/home/system/.ownhub/active/codex")),
-            PathBuf::from("/home/system/.ownhub/active/codex")
+            strip_verbatim(Path::new("/home/user/.ownhub/active/codex")),
+            PathBuf::from("/home/user/.ownhub/active/codex")
         );
         assert_eq!(
-            strip_verbatim(Path::new(r"C:\Users\system\.ownhub")),
-            PathBuf::from(r"C:\Users\system\.ownhub")
+            strip_verbatim(Path::new(r"C:\Users\user\.ownhub")),
+            PathBuf::from(r"C:\Users\user\.ownhub")
         );
     }
 

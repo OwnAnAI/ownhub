@@ -80,16 +80,16 @@ mod tests {
     #[test]
     fn home_wins_over_userprofile() {
         let home = home_dir_with(lookup(&[
-            ("HOME", "/home/system"),
-            ("USERPROFILE", "C:\\Users\\system"),
+            ("HOME", "/home/user"),
+            ("USERPROFILE", "C:\\Users\\user"),
         ]));
-        assert_eq!(home, Some(PathBuf::from("/home/system")));
+        assert_eq!(home, Some(PathBuf::from("/home/user")));
     }
 
     #[test]
     fn userprofile_is_the_windows_fallback() {
-        let home = home_dir_with(lookup(&[("USERPROFILE", "C:\\Users\\system")]));
-        assert_eq!(home, Some(PathBuf::from("C:\\Users\\system")));
+        let home = home_dir_with(lookup(&[("USERPROFILE", "C:\\Users\\user")]));
+        assert_eq!(home, Some(PathBuf::from("C:\\Users\\user")));
     }
 
     #[test]
@@ -100,10 +100,10 @@ mod tests {
         let blank = lookup(&[("HOME", "   "), ("USERPROFILE", "\t")]);
         assert_eq!(home_dir_with(blank), None, "whitespace is not a location");
 
-        let recovered = lookup(&[("HOME", ""), ("USERPROFILE", "C:\\Users\\system")]);
+        let recovered = lookup(&[("HOME", ""), ("USERPROFILE", "C:\\Users\\user")]);
         assert_eq!(
             home_dir_with(recovered),
-            Some(PathBuf::from("C:\\Users\\system")),
+            Some(PathBuf::from("C:\\Users\\user")),
             "an empty HOME does not hide the fallback"
         );
     }

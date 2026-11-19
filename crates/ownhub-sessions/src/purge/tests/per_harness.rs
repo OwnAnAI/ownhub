@@ -14,17 +14,17 @@ fn claude_filters_history_and_leaves_a_project_that_still_holds_data() {
     let fixture = Fixture::new();
     fixture.write(
         ".claude/history.jsonl",
-        "{\"display\":\"first\",\"timestamp\":1789947957028,\"project\":\"/home/system\",\
+        "{\"display\":\"first\",\"timestamp\":1789947957028,\"project\":\"/home/user\",\
           \"sessionId\":\"gone\"}\n\
-         {\"display\":\"other\",\"timestamp\":1789947964449,\"project\":\"/home/system\",\
+         {\"display\":\"other\",\"timestamp\":1789947964449,\"project\":\"/home/user\",\
           \"sessionId\":\"kept\"}\n",
     );
     fixture.write(
-        ".claude/projects/-home-system/gone.jsonl",
+        ".claude/projects/-home-user/gone.jsonl",
         "{\"type\":\"user\"}\n",
     );
     fixture.write(
-        ".claude/projects/-home-system/kept.jsonl",
+        ".claude/projects/-home-user/kept.jsonl",
         "{\"type\":\"user\"}\n",
     );
 
@@ -37,14 +37,14 @@ fn claude_filters_history_and_leaves_a_project_that_still_holds_data() {
     )
     .expect("purge");
 
-    assert!(!fixture.exists(".claude/projects/-home-system/gone.jsonl"));
-    assert!(fixture.exists(".claude/projects/-home-system/kept.jsonl"));
+    assert!(!fixture.exists(".claude/projects/-home-user/gone.jsonl"));
+    assert!(fixture.exists(".claude/projects/-home-user/kept.jsonl"));
 
     let history = fs::read_to_string(fixture.home.join(".claude/history.jsonl")).unwrap();
     assert!(!history.contains("\"gone\""));
     assert!(history.contains("\"kept\""));
     assert!(
-        fixture.exists(".claude/projects/-home-system"),
+        fixture.exists(".claude/projects/-home-user"),
         "a project folder holding another session stays"
     );
 }

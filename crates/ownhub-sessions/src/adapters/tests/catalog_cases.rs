@@ -91,7 +91,7 @@ fn antigravity_reads_titles_step_counts_and_workspace_uris() {
          INSERT INTO conversation_summaries VALUES
            ('a8ceb54b', '', 'Fix the audio kernel', 12,
             '2026-08-18 12:11:33.083102087+00:00',
-            '[\"file:///home/system/Coding/Biblioteca/\"]');",
+            '[\"file:///work/biblioteca/\"]');",
     );
     let brain = home.write(
         ".gemini/antigravity/brain/a8ceb54b/logs/transcript.jsonl",
@@ -108,7 +108,7 @@ fn antigravity_reads_titles_step_counts_and_workspace_uris() {
     assert_eq!(sessions[0].turns_count, 12);
     assert_eq!(
         sessions[0].project_path.as_deref(),
-        Some("/home/system/Coding/Biblioteca")
+        Some("/work/biblioteca")
     );
     assert_eq!(sessions[0].updated_at, "2026-08-18T12:11:33Z");
     assert_eq!(sessions[0].size_bytes, brain + conversation);
@@ -165,15 +165,15 @@ fn claude_prefers_history_titles_and_transcript_cwd() {
     let home = TestHome::new();
     home.write(
         ".claude/history.jsonl",
-        "{\"display\":\"/usage\",\"timestamp\":1789947957028,\"project\":\"/home/system\",\
+        "{\"display\":\"/usage\",\"timestamp\":1789947957028,\"project\":\"/home/user\",\
           \"sessionId\":\"153a4174\"}\n\
-         {\"display\":\"oi\",\"timestamp\":1789947964449,\"project\":\"/home/system\",\
+         {\"display\":\"oi\",\"timestamp\":1789947964449,\"project\":\"/home/user\",\
           \"sessionId\":\"153a4174\"}\n",
     );
     let transcript = home.write(
-        ".claude/projects/-home-system/153a4174.jsonl",
+        ".claude/projects/-home-user/153a4174.jsonl",
         "{\"type\":\"mode\",\"sessionId\":\"153a4174\"}\n\
-         {\"type\":\"user\",\"cwd\":\"/home/system/Persistente\",\
+         {\"type\":\"user\",\"cwd\":\"/work/project\",\
           \"message\":{\"content\":[{\"type\":\"text\",\"text\":\"first prompt\"}]}}\n",
     );
 
@@ -181,7 +181,7 @@ fn claude_prefers_history_titles_and_transcript_cwd() {
     assert_eq!(sessions.len(), 1);
     // The slash command is skipped in favour of the first real prompt.
     assert_eq!(sessions[0].title, "oi");
-    assert_eq!(sessions[0].project_path.as_deref(), Some("/home/system"));
+    assert_eq!(sessions[0].project_path.as_deref(), Some("/home/user"));
     assert_eq!(sessions[0].turns_count, 2);
     assert_eq!(sessions[0].size_bytes, transcript);
     assert_eq!(sessions[0].updated_at, "2026-09-20T23:46:04Z");
